@@ -165,59 +165,266 @@
 <section class="amenities" id="amenities">
   <div class="container">
     <p class="eyebrow center">Comfort, Considered</p>
-    <h2 class="section-title center">Everything You Need, Nothing You Don't</h2>
+    <h2 class="section-title center">What This Space Offers</h2>
+    <p class="section-subtitle center">From the rooftop hot tub to the last spare pillow &mdash; everything is here.</p>
 
     <div class="amenities-grid">
       <div class="amenity-card">
         <span class="amenity-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3a9 9 0 019 9H3a9 9 0 019-9z"/><path d="M12 12v7a2 2 0 01-4 0"/></svg>
+        </span>
+        <h3>Private Hot Tub</h3>
+        <p>Rooftop jacuzzi with an Acropolis view, available 24 hours a day, year-round.</p>
+      </div>
+
+      <div class="amenity-card">
+        <span class="amenity-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 19h18L14 7l-4 6-2-2z"/></svg>
+        </span>
+        <h3>Acropolis &amp; City Views</h3>
+        <p>Panoramic skyline, mountain, and monument views from the terrace and windows.</p>
+      </div>
+
+      <div class="amenity-card">
+        <span class="amenity-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M14 9l2 2"/></svg>
+        </span>
+        <h3>Self Check-In</h3>
+        <p>Host-free lockbox entry &mdash; arrive on your own schedule, any hour.</p>
+      </div>
+
+      <div class="amenity-card">
+        <span class="amenity-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12.5a11 11 0 0114 0M8.5 16a6 6 0 017 0M12 19.5h.01"/></svg>
         </span>
-        <h3>High-Speed Wi-Fi</h3>
-        <p>Fiber-grade connection with a dedicated workstation for remote work.</p>
+        <h3>Free Wi-Fi &amp; Workspace</h3>
+        <p>Fast wifi throughout, plus a dedicated laptop-friendly workspace.</p>
       </div>
 
       <div class="amenity-card">
         <span class="amenity-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 15h18M3 15a4 4 0 004 4h10a4 4 0 004-4M3 15V8a2 2 0 012-2h2M9 6V4M13 6V4M17 6V4"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 2v6a2 2 0 002 2 2 2 0 002-2V2M9 10v12M17 2c-1.5 0-3 1.5-3 4s1.5 4 3 4M17 2v18"/></svg>
         </span>
-        <h3>Climate Control</h3>
-        <p>Independent air conditioning and heating in every room, individually zoned.</p>
-      </div>
-
-      <div class="amenity-card">
-        <span class="amenity-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 8h13v5a5 5 0 01-5 5H9a5 5 0 01-5-5V8z"/><path d="M17 9h1a3 3 0 010 6h-1M8 3v2M12 3v2"/></svg>
-        </span>
-        <h3>Espresso Machine</h3>
-        <p>A proper Italian espresso machine, fresh beans included.</p>
+        <h3>Fully Equipped Kitchen</h3>
+        <p>Cook your own meals with a full range of cookware, oven, and coffee maker.</p>
       </div>
 
       <div class="amenity-card">
         <span class="amenity-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 18v-6a4 4 0 014-4h10a4 4 0 014 4v6M3 18h18M5 12v-1a2 2 0 012-2h3M3 21v-3M21 21v-3"/></svg>
         </span>
-        <h3>Luxury Linens</h3>
-        <p>Hotel-grade Egyptian cotton linens and hypoallergenic pillows.</p>
+        <h3>Hotel-Grade Linens</h3>
+        <p>Cotton bed linens, blackout curtains, extra pillows, iron, and drying rack.</p>
       </div>
+    </div>
 
-      <div class="amenity-card">
-        <span class="amenity-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M8 21h8M12 17v4"/></svg>
-        </span>
-        <h3>Smart TV</h3>
-        <p>Large-screen Smart TV with Netflix, YouTube, and streaming access.</p>
-      </div>
-
-      <div class="amenity-card">
-        <span class="amenity-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>
-        </span>
-        <h3>Self Check-In</h3>
-        <p>Keyless smart lock entry &mdash; arrive on your own schedule, any hour.</p>
-      </div>
+    <div class="amenities-cta">
+      <button type="button" class="btn btn-outline" id="amenities-toggle">Show all 56 amenities</button>
     </div>
   </div>
 </section>
+
+<!-- Amenities modal -->
+<div class="amenities-modal" id="amenities-modal" aria-hidden="true">
+  <div class="amenities-modal-panel" role="dialog" aria-modal="true" aria-labelledby="amenities-modal-title">
+    <div class="amenities-modal-head">
+      <h3 id="amenities-modal-title">What This Space Offers</h3>
+      <button type="button" class="amenities-modal-close" id="amenities-modal-close" aria-label="Close amenities list">&times;</button>
+    </div>
+
+    <div class="amenities-modal-body">
+      <div class="amenities-categories">
+        <div class="amenity-category">
+          <div class="amenity-category-head">
+            <span class="amenity-icon amenity-icon-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 19h18L14 7l-4 6-2-2z"/></svg>
+            </span>
+            <h3>Views</h3>
+          </div>
+          <ul class="amenity-list">
+            <li>City skyline view</li>
+            <li>Mountain view</li>
+          </ul>
+        </div>
+
+        <div class="amenity-category">
+          <div class="amenity-category-head">
+            <span class="amenity-icon amenity-icon-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3s6 7 6 11a6 6 0 01-12 0c0-4 6-11 6-11z"/></svg>
+            </span>
+            <h3>Bathroom</h3>
+          </div>
+          <ul class="amenity-list">
+            <li>Hair dryer</li>
+            <li>Cleaning products</li>
+            <li>Shampoo</li>
+            <li>Body soap</li>
+            <li>Bidet</li>
+            <li>Outdoor shower</li>
+            <li>Hot water</li>
+            <li>Bath foam</li>
+          </ul>
+        </div>
+
+        <div class="amenity-category">
+          <div class="amenity-category-head">
+            <span class="amenity-icon amenity-icon-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="7" rx="2"/><path d="M3 11V8a2 2 0 012-2h3a2 2 0 012 2v3M3 21v-2M21 21v-2"/></svg>
+            </span>
+            <h3>Bedroom &amp; Laundry</h3>
+          </div>
+          <ul class="amenity-list">
+            <li>Essentials &mdash; towels, bed sheets, soap &amp; toilet paper</li>
+            <li>Hangers</li>
+            <li>Bed linen</li>
+            <li>Cotton linens</li>
+            <li>Extra pillows &amp; blankets</li>
+            <li>Blackout curtains</li>
+            <li>Iron</li>
+            <li>Clothes drying rack</li>
+            <li>Mosquito net</li>
+            <li>Closet &amp; dresser for clothing storage</li>
+          </ul>
+        </div>
+
+        <div class="amenity-category">
+          <div class="amenity-category-head">
+            <span class="amenity-icon amenity-icon-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M8 21h8M12 17v4"/></svg>
+            </span>
+            <h3>Entertainment</h3>
+          </div>
+          <ul class="amenity-list">
+            <li>HDTV with DVD player</li>
+            <li>Sound system</li>
+          </ul>
+        </div>
+
+        <div class="amenity-category">
+          <div class="amenity-category-head">
+            <span class="amenity-icon amenity-icon-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 15h18M3 15a4 4 0 004 4h10a4 4 0 004-4M3 15V8a2 2 0 012-2h2M9 6V4M13 6V4M17 6V4"/></svg>
+            </span>
+            <h3>Heating &amp; Cooling</h3>
+          </div>
+          <ul class="amenity-list">
+            <li>Window AC unit</li>
+            <li>Portable heater</li>
+          </ul>
+        </div>
+
+        <div class="amenity-category">
+          <div class="amenity-category-head">
+            <span class="amenity-icon amenity-icon-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l7 4v5c0 5-3.5 8.5-7 9-3.5-.5-7-4-7-9V7l7-4z"/></svg>
+            </span>
+            <h3>Home Safety</h3>
+          </div>
+          <ul class="amenity-list">
+            <li>Exterior security cameras on the property</li>
+            <li>Security camera facing the apartment's front door (viewing only)</li>
+            <li>Smoke alarm</li>
+            <li>Carbon monoxide alarm</li>
+            <li>Fire extinguisher</li>
+            <li>First aid kit</li>
+          </ul>
+        </div>
+
+        <div class="amenity-category">
+          <div class="amenity-category-head">
+            <span class="amenity-icon amenity-icon-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12.5a11 11 0 0114 0M8.5 16a6 6 0 017 0M12 19.5h.01"/></svg>
+            </span>
+            <h3>Internet &amp; Office</h3>
+          </div>
+          <ul class="amenity-list">
+            <li>Wifi</li>
+            <li>Dedicated workspace &mdash; laptop-friendly, in a private area</li>
+          </ul>
+        </div>
+
+        <div class="amenity-category">
+          <div class="amenity-category-head">
+            <span class="amenity-icon amenity-icon-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 2v6a2 2 0 002 2 2 2 0 002-2V2M9 10v12M17 2c-1.5 0-3 1.5-3 4s1.5 4 3 4M17 2v18"/></svg>
+            </span>
+            <h3>Kitchen &amp; Dining</h3>
+          </div>
+          <ul class="amenity-list">
+            <li>Kitchen &mdash; space for guests to cook</li>
+            <li>Refrigerator</li>
+            <li>Cooking basics &mdash; pots, pans, oil, salt &amp; pepper</li>
+            <li>Dishes &amp; silverware</li>
+            <li>Freezer</li>
+            <li>Stove</li>
+            <li>Oven</li>
+            <li>Kettle</li>
+            <li>Coffee maker</li>
+            <li>Wine glasses</li>
+            <li>Toaster</li>
+            <li>Baking sheet</li>
+            <li>Dining table</li>
+            <li>Coffee</li>
+          </ul>
+        </div>
+
+        <div class="amenity-category">
+          <div class="amenity-category-head">
+            <span class="amenity-icon amenity-icon-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 21V5a2 2 0 012-2h6l6 3v15"/><path d="M13 3v18M9 12h.01"/></svg>
+            </span>
+            <h3>Location Features</h3>
+          </div>
+          <ul class="amenity-list">
+            <li>Private entrance &mdash; separate street or building access</li>
+          </ul>
+        </div>
+
+        <div class="amenity-category">
+          <div class="amenity-category-head">
+            <span class="amenity-icon amenity-icon-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3a9 9 0 019 9H3a9 9 0 019-9z"/><path d="M12 12v7a2 2 0 01-4 0"/></svg>
+            </span>
+            <h3>Outdoor Space</h3>
+          </div>
+          <ul class="amenity-list">
+            <li>Private patio or balcony</li>
+            <li>Outdoor furniture</li>
+            <li>Outdoor dining area</li>
+            <li>Sun loungers</li>
+          </ul>
+        </div>
+
+        <div class="amenity-category">
+          <div class="amenity-category-head">
+            <span class="amenity-icon amenity-icon-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="10" width="18" height="8" rx="2"/><path d="M5 10l2-5h10l2 5M7 18v2M17 18v2"/></svg>
+            </span>
+            <h3>Parking &amp; Facilities</h3>
+          </div>
+          <ul class="amenity-list">
+            <li>Free street parking</li>
+            <li>Private hot tub &mdash; available year-round, 24 hours a day</li>
+            <li>Elevator</li>
+          </ul>
+        </div>
+
+        <div class="amenity-category">
+          <div class="amenity-category-head">
+            <span class="amenity-icon amenity-icon-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>
+            </span>
+            <h3>Services</h3>
+          </div>
+          <ul class="amenity-list">
+            <li>Self check-in</li>
+            <li>Lockbox</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ============ LOCATION ============ -->
 <section class="location" id="location">

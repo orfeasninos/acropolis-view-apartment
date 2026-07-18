@@ -105,7 +105,40 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ---------------------------------------------------------------------
-     4. Contact / inquiry form
+     4. Amenities modal
+     --------------------------------------------------------------------- */
+  const amenitiesToggle = document.getElementById('amenities-toggle');
+  const amenitiesModal = document.getElementById('amenities-modal');
+  const amenitiesClose = document.getElementById('amenities-modal-close');
+
+  const openAmenitiesModal = () => {
+    amenitiesModal.classList.add('active');
+    amenitiesModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeAmenitiesModal = () => {
+    amenitiesModal.classList.remove('active');
+    amenitiesModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  amenitiesToggle.addEventListener('click', openAmenitiesModal);
+  amenitiesClose.addEventListener('click', closeAmenitiesModal);
+
+  // Click outside the panel (on the dark backdrop) closes the modal
+  amenitiesModal.addEventListener('click', (event) => {
+    if (event.target === amenitiesModal) closeAmenitiesModal();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && amenitiesModal.classList.contains('active')) {
+      closeAmenitiesModal();
+    }
+  });
+
+  /* ---------------------------------------------------------------------
+     5. Contact / inquiry form
      --------------------------------------------------------------------- */
   const contactForm = document.getElementById('contact-form');
   const formNote = document.getElementById('form-note');

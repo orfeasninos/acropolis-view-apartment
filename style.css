@@ -464,8 +464,6 @@ section { padding: 100px 0; }
 
 @media (max-width: 640px) {
   .lightbox-nav { width: 42px; height: 42px; }
-  .lightbox-prev { left: 10px; }
-  .lightbox-next { right: 10px; }
   .lightbox-close { top: 14px; right: 14px; }
 }
 

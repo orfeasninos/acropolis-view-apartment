@@ -136,36 +136,4 @@ document.addEventListener('DOMContentLoaded', () => {
       closeAmenitiesModal();
     }
   });
-
-  /* ---------------------------------------------------------------------
-     5. Contact / inquiry form
-     --------------------------------------------------------------------- */
-  const contactForm = document.getElementById('contact-form');
-  const formNote = document.getElementById('form-note');
-  const checkInInput = document.getElementById('check-in');
-  const checkOutInput = document.getElementById('check-out');
-
-  // Prevent selecting a check-in/check-out date in the past
-  const today = new Date().toISOString().split('T')[0];
-  checkInInput.setAttribute('min', today);
-  checkOutInput.setAttribute('min', today);
-
-  // Keep check-out from being earlier than the chosen check-in date
-  checkInInput.addEventListener('change', () => {
-    checkOutInput.setAttribute('min', checkInInput.value);
-  });
-
-  contactForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    if (!contactForm.checkValidity()) {
-      contactForm.reportValidity();
-      return;
-    }
-
-    formNote.textContent = 'Thank you! Your inquiry has been sent — we’ll be in touch shortly.';
-    contactForm.reset();
-    checkInInput.setAttribute('min', today);
-    checkOutInput.setAttribute('min', today);
-  });
 });

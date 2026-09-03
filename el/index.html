@@ -535,13 +535,11 @@
     <textarea id="message" name="message" rows="4" placeholder="Πείτε μας για το ταξίδι σας..."></textarea>
   </div>
 
-  <!-- Honeypot Field για Spam Protection -->
-<!-- Αόρατο πεδίο Honeypot με κρυφό style και autocomplete="off" -->
 <div style="position: absolute; left: -9999px; top: -9999px;" aria-hidden="true">
   <input type="text" name="website_hp" id="website_hp" tabindex="-1" autocomplete="off">
 </div>
 
-  <button type="submit" class="btn btn-primary form-submit">Send Inquiry</button>
+  <button type="submit" class="btn btn-primary form-submit">Αποστολή</button>
   <p class="form-note" id="form-note" role="status"></p>
 </form>
   </div>
@@ -558,91 +556,5 @@
 </footer>
 
 <script src="../script.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('contact-form');
-  const formNote = document.getElementById('form-note');
-  const submitBtn = form ? form.querySelector('.form-submit') : null;
-
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz7Elw_3gLgiCRafe0CO_BTQpy5SbAi0Y4aMBJBFOFg5UVc6pBtUD6pLWuSCdWvXnM/exec';
-
-  if (!form) return;
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    if (submitBtn.disabled) return;
-
-    if (formNote) {
-      formNote.textContent = '';
-      formNote.style.color = '';
-    }
-
-    // 1. Native HTML5 validation check
-    if (!form.checkValidity()) {
-      // DEBUG: δείξε ποιο/ποια πεδία θεωρούνται άκυρα
-      const invalidFields = Array.from(form.elements)
-        .filter(el => el.willValidate && !el.checkValidity())
-        .map(el => `${el.name || el.id} = "${el.value}"`);
-      console.warn('Invalid fields:', invalidFields);
-
-      form.reportValidity();
-      return;
-    }
-
-    const originalBtnText = submitBtn.textContent;
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending...';
-
-    // 2. Honeypot check (αν συμπληρώθηκε, είναι bot)
-    const hpField = form.querySelector('input[name="website_hp"]');
-    if (hpField && hpField.value.trim() !== '') {
-      console.warn('Honeypot triggered');
-      if (formNote) {
-        formNote.style.color = '#2e7d32';
-        formNote.textContent = 'Thank you! Your inquiry has been sent successfully.';
-      }
-      form.reset();
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalBtnText;
-      return;
-    }
-
-    const formData = new FormData(form);
-    const searchParams = new URLSearchParams(formData);
-
-    try {
-      const response = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: searchParams.toString(),
-      });
-
-      const data = await response.json();
-
-      if (data.result === 'success') {
-        if (formNote) {
-          formNote.style.color = '#2e7d32';
-          formNote.textContent = 'Thank you! Your inquiry has been sent successfully.';
-        }
-        form.reset();
-      } else {
-        throw new Error(data.error || 'Submission failed');
-      }
-    } catch (err) {
-      console.error('Submission error:', err);
-      if (formNote) {
-        formNote.style.color = '#c62828';
-        formNote.textContent = 'Something went wrong. Please try again or contact us directly.';
-      }
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalBtnText;
-    }
-  });
-});
-</script>
 </body>
 </html>

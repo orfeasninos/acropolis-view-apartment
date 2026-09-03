@@ -139,11 +139,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------------------------------------------------------------------
      5. Contact / inquiry form — date constraints + submit handling
-     (fetch προς Google Apps Script, honeypot, validation, μηνύματα).
-     ΠΡΟΣΟΧΗ: αυτό είναι ο ΜΟΝΟΣ 'submit' listener πάνω στη φόρμα.
-     Μην προσθέσεις άλλον αλλού (π.χ. inline στο index.html) — δύο
-     listeners στην ίδια φόρμα σημαίνει ότι ο πρώτος μπορεί να κάνει
-     reset στα πεδία πριν προλάβει να τα διαβάσει ο δεύτερος.
      --------------------------------------------------------------------- */
   const contactForm = document.getElementById('contact-form');
 

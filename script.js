@@ -136,163 +136,169 @@ document.addEventListener('DOMContentLoaded', () => {
       closeAmenitiesModal();
     }
   });
-
-  /* ---------------------------------------------------------------------
-     5. Contact / inquiry form — date constraints + submit handling
-     --------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------
+   Airbnb / Accommodation Inquiry Form Handler
+   --------------------------------------------------------------------- */
+window.addEventListener("DOMContentLoaded", function () {
   const contactForm = document.getElementById('contact-form');
+  if (!contactForm) return;
 
-  if (contactForm) {
-    const formNote = document.getElementById('form-note');
-    const submitBtn = contactForm.querySelector('.form-submit');
-    const checkInInput = document.getElementById('check-in');
-    const checkOutInput = document.getElementById('check-out');
+  const formNote = document.getElementById('form-note');
+  const submitBtn = contactForm.querySelector('.form-submit');
+  const checkInInput = document.getElementById('check-in');
+  const checkOutInput = document.getElementById('check-out');
 
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0HimXbB4rgVpUrAFb74W0JHMX8l9gmOUTgk9jS-lIlVKac6ZHDRukleFs_Ydznnidgg/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx8L2PWCMkKdlN-WMXLPQyA7IStkBRrSM-JpiP5ZqMubGtIcD8bVm0A7x_7yQZnZTDK/exec';
 
-    // Γλωσσικά μηνύματα — παίρνει το lang από <html lang="...">, EN by default
-    const isGreek = (document.documentElement.lang || '').toLowerCase().startsWith('el');
-    const messages = isGreek
-      ? {
-          success: 'Ευχαριστούμε! Το αίτημά σας εστάλη με επιτυχία.',
-          error: 'Κάτι πήγε στραβά. Παρακαλούμε δοκιμάστε ξανά ή επικοινωνήστε απευθείας.',
-          pastDate: 'Η ημερομηνία άφιξης δεν μπορεί να είναι στο παρελθόν.',
-          badRange: 'Η ημερομηνία αναχώρησης πρέπει να είναι μετά την άφιξη.',
-          sending: 'Αποστολή...'
-        }
-      : {
-          success: 'Thank you! Your inquiry has been sent successfully.',
-          error: 'Something went wrong. Please try again or contact us directly.',
-          pastDate: 'Check-in date cannot be in the past.',
-          badRange: 'Check-out date must be after check-in.',
-          sending: 'Sending...'
-        };
+  const isGreek = (document.documentElement.lang || '').toLowerCase().startsWith('el');
+  const messages = isGreek
+    ? {
+        success: 'Ευχαριστούμε! Το αίτημά σας εστάλη με επιτυχία.',
+        error: 'Κάτι πήγε στραβά. Παρακαλούμε δοκιμάστε ξανά ή επικοινωνήστε απευθείας.',
+        rateLimited: 'Παρακαλούμε περιμένετε λίγα δευτερόλεπτα πριν στείλετε ξανά.',
+        pastDate: 'Η ημερομηνία άφιξης δεν μπορεί να είναι στο παρελθόν.',
+        badRange: 'Η ημερομηνία αναχώρησης πρέπει να είναι μετά την άφιξη.',
+        sending: 'Αποστολή...'
+      }
+    : {
+        success: 'Thank you! Your inquiry has been sent successfully.',
+        error: 'Something went wrong. Please try again or contact us directly.',
+        rateLimited: 'Please wait a few seconds before trying again.',
+        pastDate: 'Check-in date cannot be in the past.',
+        badRange: 'Check-out date must be after check-in.',
+        sending: 'Sending...'
+      };
 
-    // Βοηθητική: επιστρέφει σημερινή ημερομηνία ως YYYY-MM-DD
-    const todayStr = () => new Date().toISOString().split('T')[0];
+  const todayStr = () => new Date().toISOString().split('T')[0];
 
-    // Βοηθητική: προσθέτει 1 μέρα σε ένα date string (YYYY-MM-DD)
-    const addOneDay = (dateStr) => {
-      const d = new Date(dateStr + 'T00:00:00');
-      d.setDate(d.getDate() + 1);
-      return d.toISOString().split('T')[0];
-    };
+  const addOneDay = (dateStr) => {
+    const d = new Date(dateStr + 'T00:00:00');
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().split('T')[0];
+  };
 
-    // Δεν επιτρέπεται ημερομηνία στο παρελθόν
-    const today = todayStr();
-    checkInInput.setAttribute('min', today);
-    checkOutInput.setAttribute('min', today);
+  const today = todayStr();
+  if (checkInInput) checkInInput.setAttribute('min', today);
+  if (checkOutInput) checkOutInput.setAttribute('min', today);
 
-    // Όταν αλλάζει το check-in, το check-out πρέπει να είναι τουλάχιστον
-    // την επόμενη μέρα — όχι ίδια ημερομηνία με το check-in.
+  if (checkInInput && checkOutInput) {
     checkInInput.addEventListener('change', () => {
       if (!checkInInput.value) return;
       const minCheckOut = addOneDay(checkInInput.value);
       checkOutInput.setAttribute('min', minCheckOut);
 
-      // Αν το ήδη επιλεγμένο check-out είναι πλέον άκυρο, το καθαρίζουμε
       if (checkOutInput.value && checkOutInput.value < minCheckOut) {
         checkOutInput.value = '';
       }
     });
+  }
 
-    contactForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-      if (submitBtn.disabled) return;
+    if (submitBtn.disabled) return;
 
+    if (formNote) {
+      formNote.textContent = '';
+      formNote.style.color = '';
+    }
+
+    if (!contactForm.checkValidity()) {
+      contactForm.reportValidity();
+      return;
+    }
+
+    const checkInVal = checkInInput ? checkInInput.value : '';
+    const checkOutVal = checkOutInput ? checkOutInput.value : '';
+    const todayVal = todayStr();
+
+    if (checkInVal && checkInVal < todayVal) {
       if (formNote) {
-        formNote.textContent = '';
-        formNote.style.color = '';
+        formNote.style.color = '#c62828';
+        formNote.textContent = messages.pastDate;
+      }
+      return;
+    }
+
+    if (checkInVal && checkOutVal && checkOutVal <= checkInVal) {
+      if (formNote) {
+        formNote.style.color = '#c62828';
+        formNote.textContent = messages.badRange;
+      }
+      return;
+    }
+
+    // Fingerprint / User ID setup
+    let userId = localStorage.getItem('ac_user_id');
+    if (!userId) {
+      userId = 'usr_' + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem('ac_user_id', userId);
+    }
+
+    const originalBtnText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = messages.sending;
+
+    // Honeypot check (Client-side fast fail for bots)
+    const hpField = contactForm.querySelector('input[name="website_hp"]');
+    if (hpField && hpField.value.trim() !== '') {
+      if (formNote) {
+        formNote.style.color = '#2e7d32';
+        formNote.textContent = messages.success;
+      }
+      contactForm.reset();
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalBtnText;
+      return;
+    }
+
+    const formData = new FormData(contactForm);
+    formData.append('user_id', userId);
+    formData.append('ts', Date.now());
+
+    const searchParams = new URLSearchParams(formData);
+
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: searchParams.toString(),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP Error: ${response.status}`);
       }
 
-      // 1. Native HTML5 validation check
-      if (!contactForm.checkValidity()) {
-        const invalidFields = Array.from(contactForm.elements)
-          .filter(el => el.willValidate && !el.checkValidity())
-          .map(el => `${el.name || el.id} = "${el.value}"`);
-        console.warn('Invalid fields:', invalidFields);
-        contactForm.reportValidity();
-        return;
-      }
+      const resData = await response.json();
 
-      // 2. Επιπλέον λογικός έλεγχος ημερομηνιών (πέρα από το native min)
-      const checkInVal = checkInInput.value;
-      const checkOutVal = checkOutInput.value;
-      const todayVal = todayStr();
-
-      if (checkInVal < todayVal) {
-        if (formNote) {
-          formNote.style.color = '#c62828';
-          formNote.textContent = messages.pastDate;
-        }
-        return;
-      }
-
-      if (checkOutVal <= checkInVal) {
-        if (formNote) {
-          formNote.style.color = '#c62828';
-          formNote.textContent = messages.badRange;
-        }
-        return;
-      }
-
-      // 3. Disable το κουμπί αμέσως μετά το validation
-      const originalBtnText = submitBtn.textContent;
-      submitBtn.disabled = true;
-      submitBtn.textContent = messages.sending;
-
-      // 4. Honeypot check (αν συμπληρώθηκε, είναι bot)
-      const hpField = contactForm.querySelector('input[name="website_hp"]');
-      if (hpField && hpField.value.trim() !== '') {
-        console.warn('Honeypot triggered');
+      if (resData.result === 'success') {
         if (formNote) {
           formNote.style.color = '#2e7d32';
           formNote.textContent = messages.success;
         }
         contactForm.reset();
-        checkInInput.setAttribute('min', today);
-        checkOutInput.setAttribute('min', today);
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalBtnText;
-        return;
-      }
-
-      const formData = new FormData(contactForm);
-      const searchParams = new URLSearchParams(formData);
-
-      try {
-        const response = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: searchParams.toString(),
-        });
-
-        const data = await response.json();
-
-        if (data.result === 'success') {
-          if (formNote) {
-            formNote.style.color = '#2e7d32';
-            formNote.textContent = messages.success;
-          }
-          contactForm.reset();
-          checkInInput.setAttribute('min', today);
-          checkOutInput.setAttribute('min', today);
-        } else {
-          throw new Error(data.error || 'Submission failed');
-        }
-      } catch (err) {
-        console.error('Submission error:', err);
+        if (checkInInput) checkInInput.setAttribute('min', today);
+        if (checkOutInput) checkOutInput.setAttribute('min', today);
+      } else if (resData.reason === 'rate_limited') {
         if (formNote) {
           formNote.style.color = '#c62828';
-          formNote.textContent = messages.error;
+          formNote.textContent = messages.rateLimited;
         }
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalBtnText;
+      } else {
+        throw new Error(resData.reason || resData.error || 'Unknown server response');
       }
-    });
-  }
+    } catch (err) {
+      console.error('Submission error:', err);
+      if (formNote) {
+        formNote.style.color = '#c62828';
+        formNote.textContent = messages.error;
+      }
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalBtnText;
+    }
+  });
+});
 });

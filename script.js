@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const checkInInput = document.getElementById('check-in');
     const checkOutInput = document.getElementById('check-out');
 
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz7Elw_3gLgiCRafe0CO_BTQpy5SbAi0Y4aMBJBFOFg5UVc6pBtUD6pLWuSCdWvXnM/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0HimXbB4rgVpUrAFb74W0JHMX8l9gmOUTgk9jS-lIlVKac6ZHDRukleFs_Ydznnidgg/exec';
 
     // Γλωσσικά μηνύματα — παίρνει το lang από <html lang="...">, EN by default
     const isGreek = (document.documentElement.lang || '').toLowerCase().startsWith('el');

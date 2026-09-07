@@ -2,13 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://REPLACE-WITH-YOUR-DOMAIN/en/</loc>
+    <loc>https://acropolisviewapartment.gr/en/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://acropolisviewapartment.gr/en/"/>
     <xhtml:link rel="alternate" hreflang="el" href="https://acropolisviewapartment.gr/el/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://acropolisviewapartment.gr/en/"/>
   </url>
   <url>
-    <loc>https://REPLACE-WITH-YOUR-DOMAIN/el/</loc>
+    <loc>https://acropolisviewapartment.gr/el/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://acropolisviewapartment.gr/en/"/>
     <xhtml:link rel="alternate" hreflang="el" href="https://acropolisviewapartment.gr/el/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://acropolisviewapartment.gr/en/"/>

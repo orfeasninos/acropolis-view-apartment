@@ -816,6 +816,7 @@ section { padding: 100px 0; }
   gap: 64px;
 }
 .contact-intro h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); margin-bottom: 18px; }
+.contact-langs { margin-top: 14px; font-size: 0.95rem; color: var(--color-text-muted); }
 
 .contact-phone {
   display: inline-flex;

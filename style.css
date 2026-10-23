@@ -26,10 +26,10 @@
 /* ---------- Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 * { -webkit-tap-highlight-color: transparent; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; cursor:default; }
 body, h1, h2, h3, p, ul, figure, form { margin: 0; }
 ul { list-style: none; padding: 0; }
-img { max-width: 100%; display: block; }
+img { max-width: 100%; height: auto; display: block; }
 button { font: inherit; cursor: pointer; background: none; border: none; }
 a { text-decoration: none; color: inherit; }
 input, select, textarea { font: inherit; }
@@ -215,6 +215,7 @@ section { padding: 100px 0; }
 .hero {
   position: relative;
   height: 100vh;
+  height: 100svh;
   min-height: 560px;
   display: flex;
   align-items: center;
@@ -413,7 +414,7 @@ section { padding: 100px 0; }
   visibility: hidden;
   transition: opacity var(--transition), visibility var(--transition);
 }
-.lightbox.active { opacity: 1; visibility: visible; }
+.lightbox.active { opacity: 1; visibility: visible; transition: opacity var(--transition), visibility 0s; }
 
 .lightbox-figure {
   max-width: min(90vw, 1100px);
@@ -535,7 +536,7 @@ section { padding: 100px 0; }
   visibility: hidden;
   transition: opacity var(--transition), visibility var(--transition);
 }
-.amenities-modal.active { opacity: 1; visibility: visible; }
+.amenities-modal.active { opacity: 1; visibility: visible; transition: opacity var(--transition), visibility 0s; }
 
 .amenities-modal-panel {
   width: min(920px, 100%);
@@ -850,6 +851,7 @@ section { padding: 100px 0; }
     top: 0;
     right: 0;
     height: 100vh;
+    height: 100dvh;
     width: min(78vw, 320px);
     background: var(--color-white);
     flex-direction: column;

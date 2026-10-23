@@ -43,6 +43,30 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ---------------------------------------------------------------------
+     Modal focus helpers: move focus into a modal, keep Tab inside it,
+     and return focus to whatever opened it once it closes
+     --------------------------------------------------------------------- */
+  const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+  const trapFocus = (modal, event) => {
+    if (event.key !== 'Tab') return;
+    const focusable = Array.from(modal.querySelectorAll(FOCUSABLE))
+      .filter((el) => !el.disabled && el.getClientRects().length > 0);
+    if (!focusable.length) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
+
+  /* ---------------------------------------------------------------------
      3. Gallery lightbox
      --------------------------------------------------------------------- */
   const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
@@ -60,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   let currentIndex = 0;
+  let lightboxOpener = null;
 
   const showSlide = (index) => {
     currentIndex = (index + slides.length) % slides.length; // wrap around
@@ -70,16 +95,19 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const openLightbox = (index) => {
+    lightboxOpener = document.activeElement;
     showSlide(index);
     lightbox.classList.add('active');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    closeBtn.focus();
   };
 
   const closeLightbox = () => {
     lightbox.classList.remove('active');
     lightbox.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    if (lightboxOpener) lightboxOpener.focus();
   };
 
   galleryItems.forEach((item, index) => {
@@ -95,13 +123,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (event.target === lightbox) closeLightbox();
   });
 
-  // Keyboard support: Escape closes, arrow keys navigate
+  // Keyboard support: Escape closes, arrow keys navigate, Tab stays inside
   document.addEventListener('keydown', (event) => {
     if (!lightbox.classList.contains('active')) return;
 
     if (event.key === 'Escape') closeLightbox();
     if (event.key === 'ArrowRight') showSlide(currentIndex + 1);
     if (event.key === 'ArrowLeft') showSlide(currentIndex - 1);
+    trapFocus(lightbox, event);
   });
 
   /* ---------------------------------------------------------------------
@@ -115,12 +144,14 @@ document.addEventListener('DOMContentLoaded', () => {
     amenitiesModal.classList.add('active');
     amenitiesModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    amenitiesClose.focus();
   };
 
   const closeAmenitiesModal = () => {
     amenitiesModal.classList.remove('active');
     amenitiesModal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    amenitiesToggle.focus();
   };
 
   amenitiesToggle.addEventListener('click', openAmenitiesModal);
@@ -132,14 +163,15 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && amenitiesModal.classList.contains('active')) {
-      closeAmenitiesModal();
-    }
+    if (!amenitiesModal.classList.contains('active')) return;
+
+    if (event.key === 'Escape') closeAmenitiesModal();
+    trapFocus(amenitiesModal, event);
   });
-/* ---------------------------------------------------------------------
-   Airbnb / Accommodation Inquiry Form Handler
-   --------------------------------------------------------------------- */
-window.addEventListener("DOMContentLoaded", function () {
+
+  /* ---------------------------------------------------------------------
+     5. Accommodation inquiry form
+     --------------------------------------------------------------------- */
   const contactForm = document.getElementById('contact-form');
   if (!contactForm) return;
 
@@ -158,6 +190,8 @@ window.addEventListener("DOMContentLoaded", function () {
         rateLimited: 'Παρακαλούμε περιμένετε λίγα δευτερόλεπτα πριν στείλετε ξανά.',
         pastDate: 'Η ημερομηνία άφιξης δεν μπορεί να είναι στο παρελθόν.',
         badRange: 'Η ημερομηνία αναχώρησης πρέπει να είναι μετά την άφιξη.',
+        invalidEmail: 'Παρακαλούμε ελέγξτε τη διεύθυνση e-mail σας.',
+        busy: 'Ο διακομιστής είναι απασχολημένος. Δοκιμάστε ξανά σε λίγο.',
         sending: 'Αποστολή...'
       }
     : {
@@ -166,20 +200,54 @@ window.addEventListener("DOMContentLoaded", function () {
         rateLimited: 'Please wait a few seconds before trying again.',
         pastDate: 'Check-in date cannot be in the past.',
         badRange: 'Check-out date must be after check-in.',
+        invalidEmail: 'Please check your email address.',
+        busy: 'The server is busy. Please try again in a moment.',
         sending: 'Sending...'
       };
 
-  const todayStr = () => new Date().toISOString().split('T')[0];
+  // Format a Date as YYYY-MM-DD in the visitor's local time zone
+  // (toISOString() would convert to UTC and can shift the day)
+  const toDateStr = (d) => {
+    const pad = (n) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  };
+
+  const todayStr = () => toDateStr(new Date());
 
   const addOneDay = (dateStr) => {
     const d = new Date(dateStr + 'T00:00:00');
     d.setDate(d.getDate() + 1);
-    return d.toISOString().split('T')[0];
+    return toDateStr(d);
   };
 
-  const today = todayStr();
-  if (checkInInput) checkInInput.setAttribute('min', today);
-  if (checkOutInput) checkOutInput.setAttribute('min', today);
+  // localStorage can throw in some privacy modes / in-app browsers
+  const getUserId = () => {
+    const fresh = 'usr_' + Math.random().toString(36).slice(2, 11);
+    try {
+      let userId = localStorage.getItem('ac_user_id');
+      if (!userId) {
+        userId = fresh;
+        localStorage.setItem('ac_user_id', userId);
+      }
+      return userId;
+    } catch (err) {
+      return fresh;
+    }
+  };
+
+  const resetDateLimits = () => {
+    const today = todayStr();
+    if (checkInInput) checkInInput.setAttribute('min', today);
+    if (checkOutInput) checkOutInput.setAttribute('min', addOneDay(today));
+  };
+
+  const showNote = (text, color) => {
+    if (!formNote) return;
+    formNote.style.color = color;
+    formNote.textContent = text;
+  };
+
+  resetDateLimits();
 
   if (checkInInput && checkOutInput) {
     checkInInput.addEventListener('change', () => {
@@ -198,10 +266,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
     if (submitBtn.disabled) return;
 
-    if (formNote) {
-      formNote.textContent = '';
-      formNote.style.color = '';
-    }
+    showNote('', '');
 
     if (!contactForm.checkValidity()) {
       contactForm.reportValidity();
@@ -210,50 +275,25 @@ window.addEventListener("DOMContentLoaded", function () {
 
     const checkInVal = checkInInput ? checkInInput.value : '';
     const checkOutVal = checkOutInput ? checkOutInput.value : '';
-    const todayVal = todayStr();
 
-    if (checkInVal && checkInVal < todayVal) {
-      if (formNote) {
-        formNote.style.color = '#c62828';
-        formNote.textContent = messages.pastDate;
-      }
+    if (checkInVal && checkInVal < todayStr()) {
+      showNote(messages.pastDate, '#c62828');
       return;
     }
 
     if (checkInVal && checkOutVal && checkOutVal <= checkInVal) {
-      if (formNote) {
-        formNote.style.color = '#c62828';
-        formNote.textContent = messages.badRange;
-      }
+      showNote(messages.badRange, '#c62828');
       return;
-    }
-
-    // Fingerprint / User ID setup
-    let userId = localStorage.getItem('ac_user_id');
-    if (!userId) {
-      userId = 'usr_' + Math.random().toString(36).substr(2, 9);
-      localStorage.setItem('ac_user_id', userId);
     }
 
     const originalBtnText = submitBtn.textContent;
     submitBtn.disabled = true;
     submitBtn.textContent = messages.sending;
 
-    // Honeypot check (Client-side fast fail for bots)
-    const hpField = contactForm.querySelector('input[name="website_hp"]');
-    if (hpField && hpField.value.trim() !== '') {
-      if (formNote) {
-        formNote.style.color = '#2e7d32';
-        formNote.textContent = messages.success;
-      }
-      contactForm.reset();
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalBtnText;
-      return;
-    }
-
+    // The honeypot (website_hp) is checked by the server only: browser autofill
+    // can fill it for real guests, who must then see an error, never a fake success
     const formData = new FormData(contactForm);
-    formData.append('user_id', userId);
+    formData.append('user_id', getUserId());
     formData.append('ts', Date.now());
 
     const searchParams = new URLSearchParams(formData);
@@ -274,31 +314,26 @@ window.addEventListener("DOMContentLoaded", function () {
       const resData = await response.json();
 
       if (resData.result === 'success') {
-        if (formNote) {
-          formNote.style.color = '#2e7d32';
-          formNote.textContent = messages.success;
-        }
+        showNote(messages.success, '#2e7d32');
         contactForm.reset();
-        if (checkInInput) checkInInput.setAttribute('min', today);
-        if (checkOutInput) checkOutInput.setAttribute('min', today);
+        resetDateLimits();
       } else if (resData.reason === 'rate_limited') {
-        if (formNote) {
-          formNote.style.color = '#c62828';
-          formNote.textContent = messages.rateLimited;
-        }
+        showNote(messages.rateLimited, '#c62828');
+      } else if (resData.reason === 'invalid_email') {
+        showNote(messages.invalidEmail, '#c62828');
+      } else if (resData.reason === 'invalid_dates') {
+        showNote(messages.badRange, '#c62828');
+      } else if (resData.reason === 'server_busy') {
+        showNote(messages.busy, '#c62828');
       } else {
         throw new Error(resData.reason || resData.error || 'Unknown server response');
       }
     } catch (err) {
       console.error('Submission error:', err);
-      if (formNote) {
-        formNote.style.color = '#c62828';
-        formNote.textContent = messages.error;
-      }
+      showNote(messages.error, '#c62828');
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = originalBtnText;
     }
   });
-});
 });

@@ -995,10 +995,16 @@ section { padding: 100px 0; }
     gap: 28px;
     padding: 40px;
     transform: translateX(100%);
-    transition: transform var(--transition);
+    /* hidden (not just off-screen) when closed, so its links can't be reached with Tab */
+    visibility: hidden;
+    transition: transform var(--transition), visibility var(--transition);
     box-shadow: var(--shadow-lg);
   }
-  .nav-menu.active { transform: translateX(0); }
+  .nav-menu.active {
+    transform: translateX(0);
+    visibility: visible;
+    transition: transform var(--transition), visibility 0s;
+  }
   .nav-cta { margin-top: 10px; }
   .nav-menu .lang-switch { padding-left: 0; border-left: none; }
 }

@@ -42,6 +42,21 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('click', closeMenu);
   });
 
+  // Escape closes the mobile menu
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && navMenu.classList.contains('active')) {
+      closeMenu();
+      navToggle.focus();
+    }
+  });
+
+  // If the screen grows past the mobile breakpoint (e.g. a tablet is rotated)
+  // while the menu is open, close it so the page doesn't stay scroll-locked
+  const desktopNav = window.matchMedia('(min-width: 1181px)');
+  desktopNav.addEventListener('change', (event) => {
+    if (event.matches && navMenu.classList.contains('active')) closeMenu();
+  });
+
   /* ---------------------------------------------------------------------
      Modal focus helpers: move focus into a modal, keep Tab inside it,
      and return focus to whatever opened it once it closes

@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
         error: 'Κάτι πήγε στραβά. Παρακαλούμε δοκιμάστε ξανά ή επικοινωνήστε απευθείας.',
         rateLimited: 'Παρακαλούμε περιμένετε λίγα δευτερόλεπτα πριν στείλετε ξανά.',
         pastDate: 'Η ημερομηνία άφιξης δεν μπορεί να είναι στο παρελθόν.',
-        badRange: 'Η ημερομηνία αναχώρησης πρέπει να είναι μετά την άφιξη.',
+        badRange: 'Η ελάχιστη διαμονή είναι 2 νύχτες. Επιλέξτε αναχώρηση τουλάχιστον 2 ημέρες μετά την άφιξη.',
         invalidEmail: 'Παρακαλούμε ελέγξτε τη διεύθυνση e-mail σας.',
         busy: 'Ο διακομιστής είναι απασχολημένος. Δοκιμάστε ξανά σε λίγο.',
         sending: 'Αποστολή...'
@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
         error: 'Something went wrong. Please try again or contact us directly.',
         rateLimited: 'Please wait a few seconds before trying again.',
         pastDate: 'Check-in date cannot be in the past.',
-        badRange: 'Check-out date must be after check-in.',
+        badRange: 'The minimum stay is 2 nights. Please choose a check-out date at least 2 days after check-in.',
         invalidEmail: 'Please check your email address.',
         busy: 'The server is busy. Please try again in a moment.',
         sending: 'Sending...'
@@ -214,9 +214,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const todayStr = () => toDateStr(new Date());
 
-  const addOneDay = (dateStr) => {
+  const MIN_NIGHTS = 2;
+
+  const addDays = (dateStr, days) => {
     const d = new Date(dateStr + 'T00:00:00');
-    d.setDate(d.getDate() + 1);
+    d.setDate(d.getDate() + days);
     return toDateStr(d);
   };
 
@@ -238,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const resetDateLimits = () => {
     const today = todayStr();
     if (checkInInput) checkInInput.setAttribute('min', today);
-    if (checkOutInput) checkOutInput.setAttribute('min', addOneDay(today));
+    if (checkOutInput) checkOutInput.setAttribute('min', addDays(today, MIN_NIGHTS));
   };
 
   const showNote = (text, color) => {
@@ -252,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (checkInInput && checkOutInput) {
     checkInInput.addEventListener('change', () => {
       if (!checkInInput.value) return;
-      const minCheckOut = addOneDay(checkInInput.value);
+      const minCheckOut = addDays(checkInInput.value, MIN_NIGHTS);
       checkOutInput.setAttribute('min', minCheckOut);
 
       if (checkOutInput.value && checkOutInput.value < minCheckOut) {
@@ -281,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    if (checkInVal && checkOutVal && checkOutVal <= checkInVal) {
+    if (checkInVal && checkOutVal && checkOutVal < addDays(checkInVal, MIN_NIGHTS)) {
       showNote(messages.badRange, '#c62828');
       return;
     }

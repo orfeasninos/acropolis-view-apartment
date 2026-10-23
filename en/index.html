@@ -47,11 +47,14 @@
     "streetAddress": "Agiou Markou",
     "addressLocality": "Athens",
     "addressRegion": "Attica",
-    "postalCode": "105 55",
+    "postalCode": "105 60",
     "addressCountry": "GR"
   },
   "containedInPlace": { "@type": "Place", "name": "Monastiraki, Athens" },
   "petsAllowed": false,
+  "checkinTime": "15:00",
+  "checkoutTime": "11:00",
+  "floorSize": { "@type": "QuantitativeValue", "value": 42, "unitCode": "MTK" },
   "amenityFeature": [
     { "@type": "LocationFeatureSpecification", "name": "Private rooftop jacuzzi", "value": true },
     { "@type": "LocationFeatureSpecification", "name": "Acropolis view", "value": true },
@@ -251,7 +254,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M14 9l2 2"/></svg>
         </span>
         <h3>Self Check-In</h3>
-        <p>Host-free lockbox entry &mdash; arrive on your own schedule, any hour.</p>
+        <p>Lockbox entry with no need to meet the host &mdash; check in any time from 15:00 to 23:30.</p>
       </div>
 
       <div class="amenity-card">
@@ -280,7 +283,7 @@
     </div>
 
     <div class="amenities-cta">
-      <button type="button" class="btn btn-outline" id="amenities-toggle">Show all 56 amenities</button>
+      <button type="button" class="btn btn-outline" id="amenities-toggle">Show all 55 amenities</button>
     </div>
   </div>
 </section>
@@ -459,12 +462,11 @@
         <div class="amenity-category">
           <div class="amenity-category-head">
             <span class="amenity-icon amenity-icon-sm">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="10" width="18" height="8" rx="2"/><path d="M5 10l2-5h10l2 5M7 18v2M17 18v2"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1z"/></svg>
             </span>
-            <h3>Parking &amp; Facilities</h3>
+            <h3>Facilities</h3>
           </div>
           <ul class="amenity-list">
-            <li>Free street parking</li>
             <li>Private hot tub &mdash; available year-round, 24 hours a day</li>
             <li>Elevator</li>
           </ul>
@@ -493,19 +495,19 @@
     <div class="location-copy">
       <p class="eyebrow">Where You'll Be</p>
       <h2>In the Heart of Monastiraki</h2>
-      <p class="lead">Set on a quiet street just steps from the main square, the apartment places the whole of ancient and modern Athens within easy reach.</p>
+      <p class="lead">Set on a quiet street a short walk from Monastiraki Square, the apartment places the whole of ancient and modern Athens within easy reach.</p>
 
       <ul class="location-list">
-        <li><span>2 min walk</span>Monastiraki Metro Station (Lines 1 &amp; 3)</li>
-        <li><span>3 min walk</span>Monastiraki Flea Market &amp; Ancient Agora</li>
-        <li><span>8 min walk</span>Acropolis &amp; Parthenon</li>
+        <li><span>7 min walk</span>Monastiraki Metro Station (Lines 1 &amp; 3)</li>
+        <li><span>8 min walk</span>Monastiraki Flea Market &amp; Ancient Agora</li>
+        <li><span>20 min walk</span>Acropolis &amp; Parthenon</li>
         <li><span>10 min walk</span>Plaka's restaurants and boutiques</li>
       </ul>
     </div>
 
     <div class="location-map">
       <img src="../photos/5d7b4672-efc8-4855-a550-cff038aed9d2.avif" width="1440" height="872" alt="Map of Monastiraki, Athens, showing the apartment location near Psyri, Plaka, and the Acropolis" class="location-map-img">
-      <p>Monastiraki, Athens 105 55, Greece</p>
+      <p>Monastiraki, Athens 105 60, Greece</p>
       <span class="map-note">Exact address provided after booking confirmation</span>
     </div>
   </div>
@@ -527,6 +529,8 @@
       <div class="policy-card">
         <h3>House Rules</h3>
         <ul class="policy-list">
+          <li>Check-in from 15:00 to 23:30 &middot; Check-out by 11:00</li>
+          <li>Quiet hours from 22:00 to 07:00</li>
           <li>No smoking or candles</li>
           <li>No parties or events</li>
           <li>Pets are not allowed</li>
@@ -584,8 +588,6 @@
       <select id="guests" name="guests">
         <option value="1">1 Guest</option>
         <option value="2" selected>2 Guests</option>
-        <option value="3">3 Guests</option>
-        <option value="4">4 Guests</option>
       </select>
     </div>
   </div>

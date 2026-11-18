@@ -926,12 +926,32 @@ section { padding: 100px 0; }
   transition: color var(--transition);
 }
 .footer-links a:hover { color: var(--color-bronze); }
-.footer-copy {
+.footer-bottom {
   width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px 24px;
   padding-top: 20px;
   border-top: 1px solid rgba(255,255,255,0.08);
+}
+.footer-copy {
   font-size: 0.8rem;
   color: rgba(255,255,255,0.45);
+}
+.footer-credit {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.4);
+  text-align: right;
+}
+.footer-credit a {
+  color: rgba(255,255,255,0.65);
+  transition: color var(--transition);
+}
+.footer-credit a:hover { color: var(--color-bronze); }
+@media (max-width: 720px) {
+  .footer-credit { width: 100%; text-align: left; }
 }
 
 /* ==========================================================================
